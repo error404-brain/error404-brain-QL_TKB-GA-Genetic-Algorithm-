@@ -1,0 +1,168 @@
+<script src="https://cdn.tailwindcss.com"></script>
+{% extends "pages/layout.html" %}
+
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<style>
+    .error-message {
+        color: red;
+        margin-top: 0.25rem;
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    input, select {
+        border: 1px solid #d1d5db;
+        padding: 0.5rem 0.75rem;
+        width: 100%;
+        border-radius: 0.375rem;
+        background-color: #f9fafb;
+        transition: border-color 0.3s;
+    }
+    input:focus, select:focus {
+        outline: none;
+        border-color: #3b82f6;
+    }
+    .btn-primary {
+        background-color: #3b82f6;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        transition: background-color 0.3s;
+    }
+    .btn-primary:hover {
+        background-color: #2563eb;
+    }
+    .radio-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    .radio-group label {
+        margin-left: 0.5rem;
+        margin-right: 1.5rem;
+    }
+</style>
+<main class="p-6 sm:p-10 space-y-6">
+    <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
+        <div class="mr-6">
+            <h1 class="text-4xl font-semibold mb-2">Sửa Thời Khóa Biểu</h1>
+        </div>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <form method="post" class="space-y-4" >
+            {% csrf_token %}
+
+            <!-- Thêm lựa chọn để người dùng chọn -->
+            <div class="form-group">
+                <label>Chỉnh sửa:</label>
+                <div class="radio-group">
+                    <label for="edit_day">Trong ngày</label>
+                    <input type="radio" id="edit_day" name="edit_choice" value="day" checked onchange="toggleFields()">
+                    <label for="edit_week">Nguyên tuần</label>
+                    <input type="radio" id="edit_week" name="edit_choice" value="week" onchange="toggleFields()">
+                </div>
+            </div>
+
+            <!-- Các trường trong form -->
+            <div class="form-group" id="div_lop_hoc_phan">
+                {{ form.lop_hoc_phan.label_tag }}
+                {{ form.lop_hoc_phan }}
+                {% for error in form.lop_hoc_phan.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+                
+            </div>
+
+            <div class="form-group" id="div_thoi_gian">
+                {{ form.thoi_gian.label_tag }}
+                {{ form.thoi_gian }}
+                {% for error in form.thoi_gian.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group" id="div_phong_hoc">
+                {{ form.lop_hoc_phan.phong_hoc.label_tag }}
+                {{ form.lop_hoc_phan.phong_hoc }}
+                {% for error in form.lop_hoc_phan.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+                
+            </div>
+
+            <div class="form-group" id="div_ngay_trong_tuan">
+                {{ form.ngay_trong_tuan.label_tag }}
+                {{ form.ngay_trong_tuan }}
+                {% for error in form.ngay_trong_tuan.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Thêm trường để chỉnh sửa ngày thực tế -->
+            <div class="form-group" id="div_ngay_thuc_te">
+                <label>Ngày thực tế:</label>
+                <input type="date" name="ngay_thuc_te" value="{{ ngay_thuc_te }}" />
+            </div>
+            <div class="form-group" id="div_ngay_doi">
+                <label>Ngày muốn đổi:</label>
+                <input type="date" id="new_date" name="new_date" />
+            </div>
+            
+            {% if form.non_field_errors %}
+                <div class="error-message">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="flex justify-end">
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    function toggleFields() {
+        var editChoice = document.querySelector('input[name="edit_choice"]:checked').value;
+        var dayFields = ['ngay_trong_tuan','ngay_thuc_te'];
+        var periodFields = ['lop_hoc_phan', 'thoi_gian','phong_hoc'];
+        var newDateField = document.getElementById('div_ngay_doi');
+    
+        if (editChoice === 'day') {
+            dayFields.forEach(function(field) {
+                document.getElementById('div_' + field).style.display = 'none';
+            });
+            periodFields.forEach(function(field) {
+                document.getElementById('div_' + field).style.display = 'block';
+            });
+            newDateField.style.display = 'none'; // Ẩn trường "Ngày muốn đổi"
+        } else {
+            dayFields.forEach(function(field) {
+                document.getElementById('div_' + field).style.display = 'block';
+            });
+            periodFields.forEach(function(field) {
+                document.getElementById('div_' + field).style.display = 'block';
+            });
+            newDateField.style.display = 'block'; // Hiển thị trường "Ngày muốn đổi"
+        }
+    }
+    
+    // Gọi hàm này khi trang được tải để thiết lập trạng thái ban đầu
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleFields();
+    });
+    
+</script>
+
+  
+{% endblock %}

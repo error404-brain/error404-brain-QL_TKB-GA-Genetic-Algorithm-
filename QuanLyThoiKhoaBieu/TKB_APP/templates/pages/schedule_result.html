@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả lập lịch</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .time-taken {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kết quả lập lịch</h1>
+        <p>Quá trình chạy đã hoàn thành!</p>
+        <p class="time-taken">Thời gian hoàn thành: <span id="time-taken">{{ time_taken_minutes }}</span> phút</p>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var timeTakenElement = document.getElementById('time-taken');
+            var timeTaken = parseFloat(timeTakenElement.textContent);
+            if (!isNaN(timeTaken)) {
+                timeTakenElement.textContent = timeTaken.toFixed(2); // Display with 2 decimal places
+            }
+        });
+    </script>
+</body>
+</html>

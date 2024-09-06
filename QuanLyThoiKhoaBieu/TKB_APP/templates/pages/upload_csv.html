@@ -1,0 +1,46 @@
+<!-- upload_csv.html -->
+{% extends "pages/layout.html" %}
+
+{% block content %}
+</br>
+<div class="container border p-3 shadow-lg p-3 mb-5 bg-body rounded" >
+<form method="post" enctype="multipart/form-data" action="{% url 'load_schedule' %}">
+    {% csrf_token %}
+    
+    <!-- File upload fields -->
+    <div class="mb-3">
+        <label for="giang_vien_file" class="form-label">Giảng Viên File</label>
+        <input class="form-control" type="file" id="file" name="file" accept=".csv">
+    </div>
+    <div class="mb-3">
+        <label for="mon_hoc_file" class="form-label">Môn Học File</label>
+        <input class="form-control" type="file" id="file_mon_hoc" name="file_mon_hoc" accept=".csv">
+    </div>
+    <div class="mb-3">
+        <label for="phong_hoc_file" class="form-label">Phòng Học File</label>
+        <input class="form-control" type="file" id="file_phong_hoc" name="file_phong_hoc" accept=".csv">
+    </div>
+    <div class="mb-3">
+        <label for="lop_hoc_phan_file" class="form-label">Lớp Học Phần File</label>
+        <input class="form-control" type="file" id="file_lop_hoc_phan" name="file_lop_hoc_phan" accept=".csv">
+    </div>
+    <div class="mb-3">
+        <label for="tiet_hoc_file" class="form-label">Tiết Học File</label>
+        <input class="form-control" type="file" id="file_tiet_hoc" name="file_tiet_hoc" accept=".csv">
+    </div>
+    
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+</div>
+<!-- Display messages -->
+{% if messages %}
+    <div class="alert alert-info mt-3">
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% endblock %}

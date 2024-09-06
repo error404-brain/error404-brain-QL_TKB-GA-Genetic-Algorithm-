@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thời Khóa Biểu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #e4a909;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: #e4a909;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        .header a:hover {
+            color: #333;
+        }
+
+    
+
+        form input[type="date"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        form button {
+            padding: 10px 20px;
+            background-color: #e4a909;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+
+ 
+        .course-link {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        /* Cách lề trên của body */
+body {
+    margin-top: 20px;
+}
+
+/* Định dạng cho bảng thời khóa biểu */
+.schedule-table table thead tr {
+    background: #86d4f5;
+}
+
+.schedule-table table thead th {
+    padding: 25px 50px;
+    color: #fff;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    position: relative;
+    border: 0;
+}
+
+.schedule-table table thead th:before {
+    content: "";
+    width: 3px;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.2);
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.schedule-table table thead th.last:before {
+    content: none;
+}
+
+.schedule-table table tbody td {
+    vertical-align: middle;
+    border: 1px solid #e2edf8;
+    font-weight: 500;
+    padding: 30px;
+    text-align: center;
+}
+
+.schedule-table table tbody td.day {
+    font-size: 22px;
+    font-weight: 600;
+    background: #f0f1f3;
+    border: 1px solid #e4e4e4;
+    position: relative;
+    transition: all 0.3s linear 0s;
+    min-width: 165px;
+}
+
+.schedule-table table tbody td.active {
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s linear 0s;
+    min-width: 165px;
+}
+
+.schedule-table table tbody td.active h4 {
+    font-weight: 700;
+    color: #000;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.schedule-table table tbody td.active p {
+    font-size: 16px;
+    line-height: normal;
+    margin-bottom: 0;
+}
+
+.schedule-table table tbody td .hover h4 {
+    font-weight: 700;
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.schedule-table table tbody td .hover p {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    line-height: normal;
+}
+
+.schedule-table table tbody td .hover span {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.schedule-table table tbody td.active::before {
+    position: absolute;
+    content: "";
+    min-width: 100%;
+    min-height: 100%;
+    transform: scale(0);
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 0.25rem;
+    transition: all 0.3s linear 0s;
+}
+
+.schedule-table table tbody td .hover {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: 99;
+    background: #86d4f5;
+    border-radius: 0.25rem;
+    padding: 25px 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s linear 0s;
+}
+
+.schedule-table table tbody td.active:hover .hover {
+    transform: translate(-50%, -50%) scale(1);
+    visibility: visible;
+    opacity: 1;
+}
+
+.schedule-table table tbody td.day:hover {
+    background: #86d4f5;
+    color: #fff;
+    border: 1px solid #86d4f5;
+}
+
+/* Định dạng cho các thiết bị có kích thước màn hình khác nhau */
+@media screen and (max-width: 1199px) {
+    .schedule-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .schedule-table table thead th {
+        padding: 25px 40px;
+    }
+
+    .schedule-table table tbody td {
+        padding: 20px;
+    }
+
+    .schedule-table table tbody td.active h4 {
+        font-size: 18px;
+    }
+
+    .schedule-table table tbody td.active p {
+        font-size: 15px;
+    }
+
+    .schedule-table table tbody td.day {
+        font-size: 20px;
+    }
+
+    .schedule-table table tbody td .hover {
+        padding: 15px 0;
+    }
+
+    .schedule-table table tbody td .hover span {
+        font-size: 17px;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .schedule-table table thead th {
+        font-size: 18px;
+        padding: 20px;
+    }
+
+    .schedule-table table tbody td.day {
+        font-size: 18px;
+    }
+
+    .schedule-table table tbody td.active h4 {
+        font-size: 17px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .schedule-table table thead th {
+        padding: 15px;
+    }
+
+    .schedule-table table tbody td {
+        padding: 15px;
+    }
+
+    .schedule-table table tbody td.active h4 {
+        font-size: 16px;
+    }
+
+    .schedule-table table tbody td.active p {
+        font-size: 14px;
+    }
+
+    .schedule-table table tbody td .hover {
+        padding: 10px 0;
+    }
+
+    .schedule-table table tbody td.day {
+        font-size: 18px;
+    }
+
+    .schedule-table table tbody td .hover span {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .schedule-table table tbody td.day {
+        min-width: 135px;
+    }
+}
+
+</style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <div class="header">
+        <h1>Thời Khóa Biểu</h1>
+        <div>
+            <a href="?giang_vien_id={{ giang_vien_id }}&start_date={{ start_date }}&prev_week=true">Tuần trước</a> |
+            <a href="?giang_vien_id={{ giang_vien_id }}&start_date={{ start_date }}&next_week=true">Tuần kế tiếp</a>
+        </div>
+        <div>
+            <form method="get" action="">
+                <input type="hidden" name="giang_vien_id" value="{{ giang_vien_id }}">
+                <label for="start_date">Chọn ngày:</label>
+                <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+                <button type="submit">Xem thời khóa biểu</button>
+                <a href="{% url 'find_tkb_by_id' %}"><i class="fa-solid fa-magnifying-glass"></i></a>
+            </form>
+            
+        </div>
+    </div>
+    
+
+    <div class="container-fluid">
+        <!-- Bảng thời khóa biểu -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="schedule-table">
+                    <table class="table bg-white">
+                        <thead>
+                            <tr role="row">
+                                <th>Ca học</th>
+                                {% for d, dd in days_of_weeks.items %}
+                                    <th>{{ d }}<br>{{ dd }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr role="row">
+                                <td class="day"><b>1-3</b></td>
+                                {% for d, dd in days_of_weeks.items %}
+                                    <td class="active" style="height:150px">
+
+                                        {% for tkb in timetable %}
+                                            {% if tkb.thoi_gian.GioBatDau.hour <= 7 and tkb.ngay_trong_tuan == d and tkb.ngay_thuc_te == dd %}
+                                            <div class="morning">
+                                                        <a href="{% url 'edit_schedule' tkb.id %}?start_date={{ start_date }}" class="course-link">
+                                                        <h4>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></h4>
+                                                        </a>
+                                                        Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br>
+                                                        <div class="hover">
+                                                            <a href="{% url 'edit_schedule' tkb.id %}?start_date={{ start_date }}" class="course-link">
+                                                                <h4>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></h4>
+                                                            </a>
+                                                            <p>Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br></p>
+                                                            <p>Phòng: {{ tkb.lop_hoc_phan.phong_hoc.TenPhongHoc }}<br></p>
+                                                            <p>GV: {{ tkb.lop_hoc_phan.giang_vien.TenGiangVien }}<br></p>
+                                                        </div>
+                                                    <br>                                         
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <td class="day"><b>4-6</b></td>
+                                {% for d, dd in days_of_weeks.items %}
+                                    <td class="active" style="height:150px">
+
+                                        {% for tkb in timetable %}
+                                            {% if tkb.thoi_gian.GioBatDau.hour >= 9 and tkb.thoi_gian.GioBatDau.hour < 12 and tkb.ngay_trong_tuan == d and tkb.ngay_thuc_te == dd %}
+                                                    <div class="morning">
+                                                        <a href="{% url 'edit_schedule' tkb.id %}?start_date={{ start_date }}" class="course-link">
+                                                        <h4>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></h4>
+                                                        </a>
+                                                        Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br>
+                                                        <div class="hover">
+                                                            <a href="{% url 'edit_schedule' tkb.id %}?start_date={{ start_date }}" class="course-link">
+                                                                <h4>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></h4>
+                                                            </a>
+                                                            <p>Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br></p>
+                                                            <p>Phòng: {{ tkb.lop_hoc_phan.phong_hoc.TenPhongHoc }}<br></p>
+                                                            <p>GV: {{ tkb.lop_hoc_phan.giang_vien.TenGiangVien }}<br></p>
+                                                        </div>
+                                                    <br>                                         
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr role="row">
+                                <td class="day"><b>7-9</b></td>
+                                {% for d, dd in days_of_weeks.items %}
+                                    <td class="active" style="height:150px">
+                                        {% for tkb in timetable %}
+                                            {% if tkb.thoi_gian.GioBatDau.hour >= 12 and tkb.thoi_gian.GioBatDau.hour < 15 and tkb.ngay_trong_tuan == d and tkb.ngay_thuc_te == dd %}
+                                                <div class="afternoon">
+                                                    <a href="{% url 'edit_schedule' tkb.id %}?start_date={{ start_date }}" class="course-link">
+                                                        <h4>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></h4>
+                                                        </a>
+                                                        Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br>
+                                                        <div class="hover">
+                                                            <a href="{% url 'edit_schedule' tkb.id %}?start_date={{ start_date }}" class="course-link">
+                                                                <h4>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></h4>
+                                                            </a>
+                                                            <p>Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br></p>
+                                                            <p>Phòng: {{ tkb.lop_hoc_phan.phong_hoc.TenPhongHoc }}<br></p>
+                                                            <p>GV: {{ tkb.lop_hoc_phan.giang_vien.TenGiangVien }}<br></p>
+                                                               
+                                                    </div>
+                                                <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                                </div>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr role="row">
+                                <td class="day"><b>10-12</b></td>
+                                {% for d, dd in days_of_weeks.items %}
+                                    <td class="active" style="height:150px">
+                                        {% for tkb in timetable %}
+                                            {% if tkb.thoi_gian.GioBatDau.hour >= 15 and tkb.thoi_gian.GioBatDau.hour < 18 and tkb.ngay_trong_tuan == d and tkb.ngay_thuc_te == dd %}
+                                                <div class="afternoon">
+                                                    <a href="{% url 'edit_schedule' tkb.id %}?start_date={{ start_date }}" class="course-link">
+                                                        <h4>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></h4>
+                                                        </a>
+                                                        Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br>
+                                                        <div class="hover">
+                                                            <a href="{% url 'edit_schedule' tkb.id %}?start_date={{ start_date }}" class="course-link">
+                                                                <h4>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></h4>
+                                                            </a>
+                                                            <p>Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br></p>
+                                                            <p>Phòng: {{ tkb.lop_hoc_phan.phong_hoc.TenPhongHoc }}<br></p>
+                                                            <p>GV: {{ tkb.lop_hoc_phan.giang_vien.TenGiangVien }}<br></p>
+                                                               
+                                                    </div>
+                                                <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                                </div>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr role="row">
+                                <td class="day" ><b>13-15</b></td>
+                                {% for d, dd in days_of_weeks.items %}
+                                    <td class="active" style="height:150px">
+                                        {% for tkb in timetable %}
+                                            {% if tkb.thoi_gian.GioBatDau.hour >= 18 and tkb.ngay_trong_tuan == d and tkb.ngay == dd %}
+                                                <div class="evening">
+                                                    <a href="{% url 'edit_schedule' tkb.id %}" class="course-link">
+                                                        <strong>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></strong>
+                                                    </a>
+                                                    Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br>
+                                                    <div class="hover">
+                                                        <a href="{% url 'edit_schedule' tkb.id %}" class="course-link">
+                                                            <strong>Môn: {{ tkb.lop_hoc_phan.mon_hoc.TenMonHoc }}<br></strong>
+                                                        </a>
+                                                        <p>Tiết: {{ tkb.thoi_gian.TietTrongKhungGio }}<br></p>
+                                                        <p>Phòng: {{ tkb.lop_hoc_phan.phong_hoc.TenPhongHoc }}<br></p>
+                                                        <p>GV: {{ tkb.lop_hoc_phan.giang_vien.TenGiangVien }}<br></p>
+                                                </div>
+                                                <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                            </div>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
