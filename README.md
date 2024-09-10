@@ -4,4 +4,3 @@
 trước khi chay phải cập nhập csdl lại<br>
 python manage.py makemigrations<br>
 python manage.py migrate<br>
-## Ảnh Sản Phẩm
